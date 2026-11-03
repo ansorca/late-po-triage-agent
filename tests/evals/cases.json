@@ -1,0 +1,28 @@
+[
+  {
+    "name": "clean_run_flags_critical_and_expedites",
+    "backend": {"failure_rate": 0.0, "seed": 1},
+    "question": "Which late POs need attention?",
+    "expect_status": "ok",
+    "must_contain": ["[CRITICAL] PO-1001", "[CRITICAL] PO-1003", "[WARNING] PO-1004", "[LOW] PO-1002"],
+    "must_not_contain": ["[CRITICAL] PO-1004", "[CRITICAL] PO-1002"],
+    "expedite_executions": 2
+  },
+  {
+    "name": "flaky_backend_still_correct",
+    "backend": {"failure_rate": 0.25, "seed": 11},
+    "question": "Triage my late orders",
+    "expect_status": "ok",
+    "must_contain": ["PO-1001", "PO-1003"],
+    "must_not_contain": ["[CRITICAL] PO-1002"],
+    "max_expedite_executions": 2
+  },
+  {
+    "name": "total_outage_degrades_gracefully",
+    "backend": {"failure_rate": 1.0, "seed": 1},
+    "question": "Triage my late orders",
+    "expect_status": "ok",
+    "must_contain": ["couldn't read"],
+    "expedite_executions": 0
+  }
+]
